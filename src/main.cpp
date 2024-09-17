@@ -6,8 +6,8 @@ using namespace vex;
 brain Brain;
 motor MotorLF = motor(PORT9);
 motor MotorLB = motor(PORT1);
-motor MotorRF = motor(PORT10);
-motor MotorRB = motor(PORT2);
+motor MotorRF = motor(PORT10,true);
+motor MotorRB = motor(PORT2,true);
 controller Controller = controller();
 
 competition Competition;

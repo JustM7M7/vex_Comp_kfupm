@@ -4,7 +4,9 @@
 using namespace vex;
 brain Brain;
 motor MotorLB = motor(PORT1);
-motor MotorRB = motor(PORT2);
+motor MotorRB = motor(PORT2,true);
+motor ArmMotor = motor(PORT19);
+motor ChainMotor = motor(PORT3);
 controller Controller = controller();
 
 competition Competition;
@@ -39,9 +41,7 @@ void autonomous(void) {
   MotorRB.spin(forward);
   vexDelay(3000);
 
-  MotorLF.stop();
   MotorLB.stop();
-  MotorRF.stop();
   MotorRB.stop();
 }
 
@@ -54,6 +54,39 @@ void axisChanged() {
     MotorRB.spin(forward, drive_right, percent);
     }
 
+void L1Pressed() {
+  Brain.Screen.print("L1 button pressed");
+  Controller.Screen.print("L1 button pressed");
+  while(Controller.ButtonL1.pressing()) {
+    ArmMotor.spin(forward);
+  }
+  ArmMotor.stop();
+}
+
+void R1Pressed() {
+  Brain.Screen.print("R1 button pressed");
+  Controller.Screen.print("R1 button pressed");
+  while(Controller.ButtonR1.pressing()) {
+    ArmMotor.spin(reverse);
+  }
+  ArmMotor.stop();
+}
+
+void R2Pressed() {
+  Brain.Screen.print("R2 button pressed");
+  while(Controller.ButtonR2.pressing()) {
+    ChainMotor.spin(forward);
+  }
+  ChainMotor.stop();
+}
+
+void L2Pressed() {
+  Brain.Screen.print("L2 button pressed");
+  while(Controller.ButtonL2.pressing()) {
+    ChainMotor.spin(reverse);
+  }
+  ChainMotor.stop();
+}
 
 void usercontrol(void) {
   while (1) {
@@ -61,6 +94,10 @@ void usercontrol(void) {
   Controller.Axis2.changed(axisChanged);
   Controller.Axis3.changed(axisChanged);
   Controller.Axis4.changed(axisChanged);
+  Controller.ButtonL1.pressed(L1Pressed);
+  Controller.ButtonR1.pressed(R1Pressed);
+  Controller.ButtonR2.pressed(R2Pressed);
+  Controller.ButtonL2.pressed(L2Pressed);
   wait(20, msec); 
   }
 }

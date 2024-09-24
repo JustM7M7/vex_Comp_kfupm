@@ -1,5 +1,4 @@
 
-#include "math.h"
 #include "vex.h"
 
 using namespace vex;
@@ -8,9 +7,14 @@ motor MotorLF = motor(PORT9);
 motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
+motor ChainMotor = motor(PORT19);
+digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
+digital_out pneumaticL = digital_out(Brain.ThreeWirePort.B);
 controller Controller = controller();
 
 competition Competition;
+
+bool pneumaticOut = false;
 
 
 void pre_auton(void) {
@@ -69,12 +73,53 @@ void axisChanged() {
     }
 
 
+void L1Pressed() {
+  Brain.Screen.print("L1 button pressed");
+}
+
+void R1Pressed() {
+  Brain.Screen.print("R1 button pressed");
+}
+
+void R2Pressed() {
+  Brain.Screen.print("R2 button pressed");
+  while(Controller.ButtonR2.pressing()) {
+    ChainMotor.spin(reverse,100,rpm);
+  }
+  ChainMotor.stop();
+}
+
+void L2Pressed() {
+  Brain.Screen.print("L2 button pressed");
+  while(Controller.ButtonL2.pressing()) {
+    ChainMotor.spin(forward,100,rpm);
+  }
+  ChainMotor.stop(); 
+}
+
+void APressed() {
+  Brain.Screen.print("A button pressed");
+  pneumaticOut = !pneumaticOut;
+  pneumaticR.set(pneumaticOut);
+  pneumaticL.set(pneumaticOut);
+}
+
+void BPressed() {
+Brain.Screen.print("B button pressed");
+}
+
 void usercontrol(void) {
   while (1) {
   Controller.Axis1.changed(axisChanged);
   Controller.Axis2.changed(axisChanged);
   Controller.Axis3.changed(axisChanged);
   Controller.Axis4.changed(axisChanged);
+  Controller.ButtonL1.pressed(L1Pressed);
+  Controller.ButtonR1.pressed(R1Pressed);
+  Controller.ButtonR2.pressed(R2Pressed);
+  Controller.ButtonL2.pressed(L2Pressed);
+  Controller.ButtonA.pressed(APressed);
+  Controller.ButtonA.pressed(BPressed);
   wait(20, msec); 
   }
 }
@@ -87,8 +132,6 @@ int main() {
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
   // Run the pre-autonomous function.
-  pre_auton();
-  autonomous();
   usercontrol();
   // Prevent main from exiting with an infinite loop.
   while (true) {

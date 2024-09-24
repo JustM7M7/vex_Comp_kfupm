@@ -4,10 +4,18 @@
 
 using namespace vex;
 brain Brain;
-motor MotorLF = motor(PORT9);
-motor MotorLB = motor(PORT1);
-motor MotorRF = motor(PORT10,true);
-motor MotorRB = motor(PORT2,true);
+motor MotorLF = motor(PORT9,true);
+motor MotorLB = motor(PORT1,true);
+motor MotorRF = motor(PORT10);
+motor MotorRB = motor(PORT2);
+
+motor_group MotorGroupR = motor_group(MotorRF, MotorRB);
+motor_group MotorGroupL = motor_group(MotorLF, MotorLB);
+
+inertial Inertial = inertial(PORT20);
+smartdrive Smartdrive = smartdrive(MotorGroupL, MotorGroupR,Inertial, 330, 300, 390, mm, 1.6);
+drivetrain Drivetrain = drivetrain(MotorGroupL, MotorGroupR, 330, 300, 390, mm, 1.6);
+
 controller Controller = controller();
 
 competition Competition;
@@ -84,14 +92,15 @@ void usercontrol(void) {
 //
 int main() {
   // Set up callbacks for autonomous and driver control periods.
-  Competition.autonomous(autonomous);
-  Competition.drivercontrol(usercontrol);
-  // Run the pre-autonomous function.
-  pre_auton();
-  autonomous();
-  usercontrol();
+//Drivetrain.turnFor(left,90, degrees,150,rpm);
+Smartdrive.turnToHeading(90, degrees,150,rpm);
+//Smartdrive.turnFor(left,90, degrees,150,rpm);
+ // vexDelay(5000);
+
   // Prevent main from exiting with an infinite loop.
   while (true) {
     wait(100, msec);
   }
+
+
 }

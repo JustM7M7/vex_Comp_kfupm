@@ -8,6 +8,7 @@ motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
 motor ChainMotor = motor(PORT19);
+motor ArmMotor = motor(PORT18); 
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
 digital_out pneumaticL = digital_out(Brain.ThreeWirePort.B);
 controller Controller = controller();
@@ -15,6 +16,7 @@ controller Controller = controller();
 competition Competition;
 
 bool pneumaticOut = false;
+double rotationAngle = 45;
 
 
 void pre_auton(void) {
@@ -106,6 +108,8 @@ void APressed() {
 
 void BPressed() {
 Brain.Screen.print("B button pressed");
+ArmMotor.spinToPosition(rotationAngle,degrees,true);
+ArmMotor.spinToPosition(-rotationAngle,degrees,true);
 }
 
 void usercontrol(void) {
@@ -131,7 +135,8 @@ int main() {
   // Set up callbacks for autonomous and driver control periods.
   Competition.autonomous(autonomous);
   Competition.drivercontrol(usercontrol);
-  // Run the pre-autonomous function.
+  //First thing is running pre-auto
+  // Temporary: Run the User-Control function.
   usercontrol();
   // Prevent main from exiting with an infinite loop.
   while (true) {

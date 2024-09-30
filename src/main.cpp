@@ -8,7 +8,7 @@ motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
 motor ChainMotor = motor(PORT19);
-motor ArmMotor = motor(PORT18); 
+motor ArmMotor = motor(PORT18,true); 
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
 digital_out pneumaticL = digital_out(Brain.ThreeWirePort.B);
 controller Controller = controller();
@@ -16,7 +16,8 @@ controller Controller = controller();
 competition Competition;
 
 bool pneumaticOut = false;
-double rotationAngle = 45;
+double DownrotationAngle = 125;
+double UProtationAngle = 115;
 
 
 void pre_auton(void) {
@@ -66,8 +67,8 @@ vexDelay(3000);
 void axisChanged() {
   int32_t drive_left;
   int32_t drive_right;
-    drive_left  =  Controller.Axis3.position();
-    drive_right =  Controller.Axis2.position();
+    drive_left  =  Controller.Axis2.position();
+    drive_right =  Controller.Axis3.position();
     MotorLF.spin(forward, drive_left, percent);
     MotorLB.spin(forward, drive_left, percent);
     MotorRB.spin(forward, drive_right, percent);
@@ -108,8 +109,8 @@ void APressed() {
 
 void BPressed() {
 Brain.Screen.print("B button pressed");
-ArmMotor.spinToPosition(rotationAngle,degrees,true);
-ArmMotor.spinToPosition(-rotationAngle,degrees,true);
+ArmMotor.spinToPosition(-DownrotationAngle,degrees,100,rpm,true);
+ArmMotor.spinToPosition(UProtationAngle,degrees,100,rpm,false);
 }
 
 void usercontrol(void) {
@@ -123,7 +124,7 @@ void usercontrol(void) {
   Controller.ButtonR2.pressed(R2Pressed);
   Controller.ButtonL2.pressed(L2Pressed);
   Controller.ButtonA.pressed(APressed);
-  Controller.ButtonA.pressed(BPressed);
+  Controller.ButtonB.pressed(BPressed);
   wait(20, msec); 
   }
 }

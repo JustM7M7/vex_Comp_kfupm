@@ -12,6 +12,13 @@ motor ArmMotor = motor(PORT18,true);
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
 digital_out pneumaticL = digital_out(Brain.ThreeWirePort.B);
 controller Controller = controller();
+motor_group MotorGroupR = motor_group(MotorRF, MotorRB);
+motor_group MotorGroupL = motor_group(MotorLF, MotorLB);
+
+inertial Inertial = inertial(PORT20);
+smartdrive Smartdrive = smartdrive(MotorGroupL, MotorGroupR,Inertial, 330, 300, 390, mm, 1.6);
+drivetrain Drivetrain = drivetrain(MotorGroupL, MotorGroupR, 330, 300, 390, mm, 1.6);
+
 
 competition Competition;
 

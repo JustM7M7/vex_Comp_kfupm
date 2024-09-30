@@ -34,41 +34,13 @@ void pre_auton(void) {
 
 
 void autonomous(void) {
-  Brain.Screen.print("Hello KFUPM VEX");
-  Brain.Screen.print("Autonomous VEX");
-  //Go stright
-  MotorLF.spin(forward);
-  MotorLB.spin(forward);
-  MotorRF.spin(forward);
-  MotorRB.spin(forward);
+ // 
+ // Turn the Smart Drivetrain for 90 degrees at 100 rpm.
+Smartdrive.turnFor(90, degrees, 200, rpm);
+// Turn the drivetrain for 90 degrees at 100 rpm.
+Drivetrain.turnFor(90, degrees, 200, rpm);
 
-vexDelay(3000);
 
-  //Go Back
-  MotorLF.spin(reverse);
-  MotorLB.spin(reverse);
-  MotorRF.spin(reverse);
-  MotorRB.spin(reverse);
-
-  vexDelay(3000);
-
-    //Go Right
-   MotorLF.spin(forward);
-  MotorLB.spin(forward);
-  MotorRF.spin(reverse);
-  MotorRB.spin(reverse);
-  vexDelay(3000);
-
-     //Go left
-  MotorLF.spin(reverse);
-  MotorLB.spin(reverse);
-  MotorRF.spin(forward);
-  MotorRB.spin(forward);
-  vexDelay(3000);
-  MotorLF.stop();
-  MotorLB.stop();
-  MotorRF.stop();
-  MotorRB.stop();
 }
 
 void axisChanged() {
@@ -145,6 +117,7 @@ int main() {
   Competition.drivercontrol(usercontrol);
   //First thing is running pre-auto
   // Temporary: Run the User-Control function.
+  autonomous();
   usercontrol();
   // Prevent main from exiting with an infinite loop.
   while (true) {

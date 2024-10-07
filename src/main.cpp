@@ -7,6 +7,8 @@ motor MotorLF = motor(PORT9);
 motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
+motor test1=motor(PORT13);
+motor test2=motor(PORT14,true);
 motor ChainMotor = motor(PORT19);
 motor ArmMotor = motor(PORT18,true); 
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
@@ -38,7 +40,15 @@ void pre_auton(void) {
 
 
 void autonomous(void) {
-
+Drivetrain.driveFor(30,inches);
+  Drivetrain.turnFor(90, degrees);
+  Drivetrain.driveFor(10,inches);
+  Drivetrain.turnFor(-90, degrees);
+  ChainMotor.spin(forward,200,rpm);
+  wait(30,msec);
+  ChainMotor.stop();
+  Drivetrain.driveFor(-10,inches);
+  Drivetrain.turnFor(180,degrees);
 
 }
 
@@ -55,10 +65,10 @@ void axisChanged() {
     }
 
     else if (!FR_mode && Flipped_mode) {
-    MotorLF.spin(reverse, drive_left, percent);
-    MotorLB.spin(reverse, drive_left, percent);
-    MotorRB.spin(reverse, drive_right, percent);
-    MotorRF.spin(reverse, drive_right, percent);
+    MotorLF.spin(reverse, drive_right, percent);
+    MotorLB.spin(reverse, drive_right, percent);
+    MotorRB.spin(reverse, drive_left, percent);
+    MotorRF.spin(reverse, drive_left, percent);
     }
 
     else if (FR_mode && !Flipped_mode) {
@@ -78,23 +88,23 @@ void axisChanged() {
 
 
 void L1Pressed() {
-  Controller.Screen.setCursor(3, 3);
-  Controller.Screen.clearLine();
-  Brain.Screen.clearScreen();
-  Brain.Screen.print("L1 button pressed");
-  FR_mode = !FR_mode;
-  if (FR_mode && Flipped_mode) {
-    Controller.Screen.print("FR & Rev");
-  }
-  else if (!FR_mode && Flipped_mode) {
-    Controller.Screen.print("FRLR & Rev");
-  }
-  else if (FR_mode && !Flipped_mode) {
-    Controller.Screen.print("FR & Nor");
-  }
-  else {
-    Controller.Screen.print("FRLR & Nor");
-  }
+  // Controller.Screen.setCursor(3, 3);
+  // Controller.Screen.clearLine();
+  // Brain.Screen.clearScreen();
+  // Brain.Screen.print("L1 button pressed");
+  // FR_mode = !FR_mode;
+  // if (FR_mode && Flipped_mode) {
+  //   Controller.Screen.print("FR & Rev");
+  // }
+  // else if (!FR_mode && Flipped_mode) {
+  //   Controller.Screen.print("FRLR & Rev");
+  // }
+  // else if (FR_mode && !Flipped_mode) {
+  //   Controller.Screen.print("FR & Nor");
+  // }
+  // else {
+  //   Controller.Screen.print("FRLR & Nor");
+  // }
 
 }
 
@@ -124,7 +134,7 @@ void APressed() {
   pneumaticL.set(pneumaticOut);
   Controller.Screen.setCursor(3, 3);
   Controller.Screen.clearLine();
-  Brain.Screen.print("Hi");
+  Brain.Screen.print("Hi\n");
   //Sometimes this doesn't work for some reason?
 }
 
@@ -136,20 +146,21 @@ ArmMotor.spinToPosition(UProtationAngle,degrees,100,rpm,false);
 
 void UpPressed() {
 Controller.Screen.setCursor(3, 3);
-Controller.Screen.clearLine();
 Brain.Screen.clearScreen();
-Brain.Screen.print("UP button pressed");
+Controller.Screen.clearLine();
+wait(20,msec);
+//Brain.Screen.print("Down button pressed");
 Flipped_mode = false;
 if (FR_mode) {
   Controller.Screen.print("FR and Normal");
-}
+  }
 else {
   Controller.Screen.print("FRLR and Normal");
-}
+  }
 }
 
 void DownPressed() {
-Controller.Screen.setCursor(3, 3);
+ Controller.Screen.setCursor(3, 3);
 Brain.Screen.clearScreen();
 Controller.Screen.clearLine();
 Brain.Screen.print("Down button pressed");
@@ -162,20 +173,32 @@ else {
 }
 }
 
+
 void usercontrol(void) {
+  test1.spin(forward);
+  test2.spin(forward);
   while (1) { 
   Controller.Axis1.changed(axisChanged);
   Controller.Axis2.changed(axisChanged);
   Controller.Axis3.changed(axisChanged);
   Controller.Axis4.changed(axisChanged);
-  Controller.ButtonL1.pressed(L1Pressed);
-  Controller.ButtonR1.pressed(R1Pressed);
-  Controller.ButtonR2.pressed(R2Pressed);
+   Controller.ButtonL1.pressed(L1Pressed);
+   Controller.ButtonR1.pressed(R1Pressed);
+   Controller.ButtonR2.pressed(R2Pressed);
   Controller.ButtonL2.pressed(L2Pressed);
-  Controller.ButtonA.pressed(APressed);
-  Controller.ButtonB.pressed(BPressed);
+//  Controller.ButtonA.pressed(APressed);
+  if (Controller.ButtonA.pressing()){
+  pneumaticOut = !pneumaticOut;
+  pneumaticR.set(pneumaticOut);
+  pneumaticL.set(pneumaticOut);
+  Controller.Screen.setCursor(3, 3);
+  Controller.Screen.clearLine();
+  Brain.Screen.print("Hi\n");
+  }
+  //Controller.ButtonB.pressed(BPressed);
   Controller.ButtonUp.pressed(UpPressed);
   Controller.ButtonDown.pressed(DownPressed);
+  //Controller.ButtonLeft.pressed(LeftPressed);
   wait(20, msec);
   }
 }
@@ -190,6 +213,7 @@ int main() {
   //First thing is running pre-auto
   // Temporary: Run the User-Control function.
   //autonomous();
+  autonomous();
   usercontrol();
   // Prevent main from exiting with an infinite loop.
   while (true) {

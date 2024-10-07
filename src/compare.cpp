@@ -1,3 +1,4 @@
+
 // #include "vex.h"
 
 // using namespace vex;
@@ -15,56 +16,47 @@
 // motor_group MotorGroupL = motor_group(MotorLF, MotorLB);
 
 // inertial Inertial = inertial(PORT20);
-// smartdrive Smartdrive = smartdrive(MotorGroupL, MotorGroupR, Inertial, 330, 300, 390, mm, 1.6);
+// smartdrive Smartdrive = smartdrive(MotorGroupL, MotorGroupR,Inertial, 330, 300, 390, mm, 1.6);
 // drivetrain Drivetrain = drivetrain(MotorGroupL, MotorGroupR, 330, 300, 390, mm, 1.6);
+// Controller.Screen.setCursor(2, 2);
+
+
 
 // competition Competition;
 
 // bool pneumaticOut = false;
-// bool FR_mode = false;
 // double DownrotationAngle = 125;
 // double UProtationAngle = 115;
+
 
 // void pre_auton(void) {
 //   Brain.Screen.print("Pre Auto VEX");
 // }
 
+
+
 // void autonomous(void) {
-//   // Turn the Smart Drivetrain for 90 degrees at 100 rpm.
-//   Smartdrive.turnFor(90, degrees, 100, rpm);
-//   // Ensure the turn completes before calling the next command.
-//   while(true) {
-//     wait(10, msec);
-//   }
-  
-//   // Turn the drivetrain for 90 degrees at 100 rpm.
-//   Drivetrain.turnFor(90, degrees, 100, rpm);
-//   // Ensure the turn completes before ending the function.
-//   while(true) {
-//     wait(10, msec);
-//   }
+// Smartdrive.turnToHeading(180, degrees, 200, rpm);
+// // Turn the drivetrain for 90 degrees at 100 rpm.
+// Smartdrive.stop();
+// Drivetrain.turnFor(90, degrees, 200, rpm);
+// Drivetrain.stop();
 // }
 
-// void handleDriveControl() {
-//   int32_t drive_left = Controller.Axis3.position();
-//   int32_t drive_right = Controller.Axis2.position();
-
-//   if (!FR_mode) {
+// void axisChanged() {
+//   int32_t drive_left;
+//   int32_t drive_right;
+//     drive_left  =  Controller.Axis2.position();
+//     drive_right =  Controller.Axis3.position();
 //     MotorLF.spin(forward, drive_left, percent);
 //     MotorLB.spin(forward, drive_left, percent);
-//     MotorRF.spin(forward, drive_right, percent);
 //     MotorRB.spin(forward, drive_right, percent);
-//   } else {
-//     MotorLF.spin(forward, drive_left, percent);
-//     MotorLB.spin(forward, drive_left, percent);
-//     MotorRF.spin(forward, drive_left, percent);
-//     MotorRB.spin(forward, drive_left, percent);
-//   }
-// }
+//     MotorRF.spin(forward, drive_right, percent);
+//     }
+
 
 // void L1Pressed() {
 //   Brain.Screen.print("L1 button pressed");
-//   FR_mode = !FR_mode;
 // }
 
 // void R1Pressed() {
@@ -73,23 +65,22 @@
 
 // void R2Pressed() {
 //   Brain.Screen.print("R2 button pressed");
-//   ChainMotor.spin(reverse, 200, rpm);
 //   while(Controller.ButtonR2.pressing()) {
-//     wait(10, msec);
+//     ChainMotor.spin(reverse,100,rpm);
 //   }
 //   ChainMotor.stop();
 // }
 
 // void L2Pressed() {
 //   Brain.Screen.print("L2 button pressed");
-//   ChainMotor.spin(forward, 200, rpm);
 //   while(Controller.ButtonL2.pressing()) {
-//     wait(10, msec);
+//     ChainMotor.spin(forward,100,rpm);
 //   }
 //   ChainMotor.stop(); 
 // }
 
 // void APressed() {
+// Controller.Screen.clearScreen();
 //   Brain.Screen.print("A button pressed");
 //   pneumaticOut = !pneumaticOut;
 //   pneumaticR.set(pneumaticOut);
@@ -97,33 +88,38 @@
 // }
 
 // void BPressed() {
-//   Brain.Screen.print("B button pressed");
-//   ArmMotor.spinToPosition(-DownrotationAngle, degrees, 100, rpm, true);
-//   ArmMotor.spinToPosition(UProtationAngle, degrees, 100, rpm, false);
+// Brain.Screen.print("B button pressed");
+// ArmMotor.spinToPosition(-DownrotationAngle,degrees,100,rpm,true);
+// ArmMotor.spinToPosition(UProtationAngle,degrees,100,rpm,false);
 // }
 
 // void usercontrol(void) {
-//   // Set up callbacks once
-//   Controller.Axis1.changed(handleDriveControl);
-//   Controller.Axis2.changed(handleDriveControl);
-//   Controller.Axis3.changed(handleDriveControl);
-//   Controller.Axis4.changed(handleDriveControl);
+//   while (1) {
+//   Controller.Axis1.changed(axisChanged);
+//   Controller.Axis2.changed(axisChanged);
+//   Controller.Axis3.changed(axisChanged);
+//   Controller.Axis4.changed(axisChanged);
 //   Controller.ButtonL1.pressed(L1Pressed);
 //   Controller.ButtonR1.pressed(R1Pressed);
 //   Controller.ButtonR2.pressed(R2Pressed);
 //   Controller.ButtonL2.pressed(L2Pressed);
 //   Controller.ButtonA.pressed(APressed);
 //   Controller.ButtonB.pressed(BPressed);
-
-//   while (true) {
-//     wait(20, msec); 
+//   wait(20, msec); 
 //   }
 // }
 
+// //
+// // Main will set up the competition functions and callbacks.
+// //
 // int main() {
-//   autonomous();
+//   // Set up callbacks for autonomous and driver control periods.
+//   Competition.autonomous(autonomous);
 //   Competition.drivercontrol(usercontrol);
-//   pre_auton();
+//   //First thing is running pre-auto
+//   // Temporary: Run the User-Control function.
+//   usercontrol();
+//   // Prevent main from exiting with an infinite loop.
 //   while (true) {
 //     wait(100, msec);
 //   }

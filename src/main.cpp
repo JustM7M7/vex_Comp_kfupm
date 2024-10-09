@@ -7,8 +7,8 @@ motor MotorLF = motor(PORT9);
 motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
-motor test1=motor(PORT13);
-motor test2=motor(PORT14,true);
+// motor test1=motor(PORT13);
+// motor test2=motor(PORT14,true);
 motor ChainMotor = motor(PORT19);
 motor ArmMotor = motor(PORT18,true); 
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
@@ -175,30 +175,20 @@ else {
 
 
 void usercontrol(void) {
-  test1.spin(forward);
-  test2.spin(forward);
-  while (1) { 
   Controller.Axis1.changed(axisChanged);
   Controller.Axis2.changed(axisChanged);
   Controller.Axis3.changed(axisChanged);
   Controller.Axis4.changed(axisChanged);
-   Controller.ButtonL1.pressed(L1Pressed);
-   Controller.ButtonR1.pressed(R1Pressed);
-   Controller.ButtonR2.pressed(R2Pressed);
+  Controller.ButtonL1.pressed(L1Pressed);
+  Controller.ButtonR1.pressed(R1Pressed);
+  Controller.ButtonR2.pressed(R2Pressed);
   Controller.ButtonL2.pressed(L2Pressed);
-//  Controller.ButtonA.pressed(APressed);
-  if (Controller.ButtonA.pressing()){
-  pneumaticOut = !pneumaticOut;
-  pneumaticR.set(pneumaticOut);
-  pneumaticL.set(pneumaticOut);
-  Controller.Screen.setCursor(3, 3);
-  Controller.Screen.clearLine();
-  Brain.Screen.print("Hi\n");
-  }
-  //Controller.ButtonB.pressed(BPressed);
+  Controller.ButtonA.pressed(APressed);
+  Controller.ButtonB.pressed(BPressed);
   Controller.ButtonUp.pressed(UpPressed);
   Controller.ButtonDown.pressed(DownPressed);
   //Controller.ButtonLeft.pressed(LeftPressed);
+  while (1) { 
   wait(20, msec);
   }
 }

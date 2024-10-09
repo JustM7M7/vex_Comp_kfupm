@@ -7,8 +7,8 @@ motor MotorLF = motor(PORT9);
 motor MotorLB = motor(PORT1);
 motor MotorRF = motor(PORT10,true);
 motor MotorRB = motor(PORT2,true);
-// motor test1=motor(PORT13);
-// motor test2=motor(PORT14,true);
+motor test1=motor(PORT13);
+motor test2=motor(PORT14,true);
 motor ChainMotor = motor(PORT19);
 motor ArmMotor = motor(PORT18,true); 
 digital_out pneumaticR = digital_out(Brain.ThreeWirePort.A);
@@ -19,8 +19,8 @@ motor_group MotorGroupL = motor_group(MotorLF, MotorLB);
 
 inertial Inertial = inertial(PORT20);
 smartdrive Smartdrive = smartdrive(MotorGroupL, MotorGroupR,Inertial, 330, 300, 390, mm, 1.6);
+//drivetrain Drivetrain = drivetrain(MotorGroupL, MotorGroupR, 329.239, 362, 304.8, mm, 1.6);
 drivetrain Drivetrain = drivetrain(MotorGroupL, MotorGroupR, 330, 300, 390, mm, 1.6);
-
 
 competition Competition;
 
@@ -40,15 +40,15 @@ void pre_auton(void) {
 
 
 void autonomous(void) {
-Drivetrain.driveFor(30,inches);
-  Drivetrain.turnFor(90, degrees);
-  Drivetrain.driveFor(10,inches);
-  Drivetrain.turnFor(-90, degrees);
-  ChainMotor.spin(forward,200,rpm);
-  wait(30,msec);
-  ChainMotor.stop();
-  Drivetrain.driveFor(-10,inches);
-  Drivetrain.turnFor(180,degrees);
+
+// Drivetrain.driveFor(reverse, 42, inches, 200, rpm);
+// Drivetrain.turnFor(-25, degrees);
+// Drivetrain.driveFor(reverse, 13, inches, 200, rpm);
+//Drivetrain.turnFor(40, degrees);  // in real 90 degrees
+//Drivetrain.turnFor(-30, degrees);
+Drivetrain.turnFor(93, degrees);
+//Drivetrain.driveFor(forward, -45/0.45, inches, 150, rpm);
+
 
 }
 
@@ -175,20 +175,30 @@ else {
 
 
 void usercontrol(void) {
+  test1.spin(forward);
+  test2.spin(forward);
+  while (1) { 
   Controller.Axis1.changed(axisChanged);
   Controller.Axis2.changed(axisChanged);
   Controller.Axis3.changed(axisChanged);
   Controller.Axis4.changed(axisChanged);
-  Controller.ButtonL1.pressed(L1Pressed);
-  Controller.ButtonR1.pressed(R1Pressed);
-  Controller.ButtonR2.pressed(R2Pressed);
+   Controller.ButtonL1.pressed(L1Pressed);
+   Controller.ButtonR1.pressed(R1Pressed);
+   Controller.ButtonR2.pressed(R2Pressed);
   Controller.ButtonL2.pressed(L2Pressed);
-  Controller.ButtonA.pressed(APressed);
-  Controller.ButtonB.pressed(BPressed);
+//  Controller.ButtonA.pressed(APressed);
+  if (Controller.ButtonA.pressing()){
+  pneumaticOut = !pneumaticOut;
+  pneumaticR.set(pneumaticOut);
+  pneumaticL.set(pneumaticOut);
+  Controller.Screen.setCursor(3, 3);
+  Controller.Screen.clearLine();
+  Brain.Screen.print("Hi\n");
+  }
+  //Controller.ButtonB.pressed(BPressed);
   Controller.ButtonUp.pressed(UpPressed);
   Controller.ButtonDown.pressed(DownPressed);
   //Controller.ButtonLeft.pressed(LeftPressed);
-  while (1) { 
   wait(20, msec);
   }
 }

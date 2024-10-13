@@ -79,6 +79,7 @@ for(int i=0; i<=4; i++){
 vexDelay(1300);
 
 vexDelay(7000);
+ChainMotor.stop();
 //Drivetrain.driveFor(forward, 25, inches, 100, rpm);
 //vexDelay(2000);
 

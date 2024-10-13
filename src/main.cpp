@@ -50,13 +50,11 @@ void pre_auton(void) {
 
 void autonomous(void) {
 //rotor.spin(forward);
-
-
 Drivetrain.driveFor(forward, 23.2, inches, 100, rpm);
 Drivetrain.turnFor(-22.5, degrees,100,rpm,true);
 Drivetrain.driveFor(forward, 17, inches, 100, rpm);
 Drivetrain.turnFor(-60, degrees,100,rpm,true);
-Drivetrain.driveFor(reverse, 20.5, inches, 60, rpm);
+Drivetrain.driveFor(reverse, 19.5, inches, 60, rpm);
 pneumaticR.set(false);
 pneumaticL.set(false);
 vexDelay(300);
@@ -64,22 +62,32 @@ Drivetrain.driveFor(forward, 17, inches, 100, rpm);
 
 ChainMotor.spin(forward,200,rpm);
 vexDelay(1300);
-for(int i=0; i<=5; i++){
-  rotor.spinToPosition(90,degrees, 200,rpm);
-  vexDelay(300);
+for(int i=0; i<=4; i++){
+  rotor.spinToPosition(77,degrees, 200,rpm);
+  vexDelay(500);
   rotor.spinToPosition(0,degrees, 200,rpm);
 }
-Drivetrain.turnFor(-47, degrees,100,rpm,true);
-Drivetrain.driveFor(forward, 25, inches, 100, rpm);
+
+//Drivetrain.turnFor(-47, degrees,100,rpm,true); 
+Drivetrain.driveFor(forward, 17, inches, 200, rpm);
 vexDelay(2000);
-
-for(int i=0; i<=5; i++){
-  rotor.spinToPosition(90,degrees, 200,rpm);
-  vexDelay(300);
+for(int i=0; i<=4; i++){
+  rotor.spinToPosition(77,degrees, 200,rpm);
+  vexDelay(500);
   rotor.spinToPosition(0,degrees, 200,rpm);
 }
+vexDelay(1300);
 
-ChainMotor.stop();
+vexDelay(7000);
+//Drivetrain.driveFor(forward, 25, inches, 100, rpm);
+//vexDelay(2000);
+
+// for(int i=0; i<=5; i++){
+//   rotor.spinToPosition(90,degrees, 200,rpm);
+//   vexDelay(300);
+//   rotor.spinToPosition(0,degrees, 200,rpm);
+// }
+// ChainMotor.stop();
 
 // Drivetrain.driveFor(forward, 23.2, inches, 100, rpm);
 // Drivetrain.turnFor(-22.5, degrees,100,rpm,true);
@@ -221,22 +229,19 @@ void APressed() {
   pneumaticOut = !pneumaticOut;
   pneumaticR.set(pneumaticOut);
   pneumaticL.set(pneumaticOut);
-  Controller.Screen.setCursor(3, 3);
-  Controller.Screen.clearLine();
-  Brain.Screen.print("Hi\n");
 }
 
 void BPressed() {
-  pneumaticOut = !pneumaticOut;
-  pneumaticR.set(pneumaticOut);
-  pneumaticL.set(pneumaticOut);
-  Controller.Screen.setCursor(3, 3);
-  Controller.Screen.clearLine();
-  Brain.Screen.print("Hi\n");
+  // pneumaticOut = !pneumaticOut;
+  // pneumaticR.set(pneumaticOut);
+  // pneumaticL.set(pneumaticOut);
+  // Controller.Screen.setCursor(3, 3);
+  // Controller.Screen.clearLine();
+  // Brain.Screen.print("Hi\n");
 }
 
 void UpPressed() {
-Controller.Screen.setCursor(3, 3);
+Controller.Screen.setCursor(3, 1);
 Brain.Screen.clearScreen();
 Controller.Screen.clearLine();
 wait(20,msec);
@@ -252,13 +257,10 @@ else {
 
 void YPressed() {
   rotor.spinToPosition(360,degrees,200,rpm);
-  
-
-
 }
 
 void DownPressed() {
- Controller.Screen.setCursor(3, 3);
+Controller.Screen.setCursor(3, 3);
 Brain.Screen.clearScreen();
 Controller.Screen.clearLine();
 Brain.Screen.print("Down button pressed");

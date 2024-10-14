@@ -36,7 +36,7 @@ bool rotor1=true;
 
 void pre_auton(void) {
   HandMotor.spinToPosition(0,degrees);
- // rotor.setTimeout(500, msec);
+  // rotor.setTimeout(500, msec);
   rotor.spinToPosition(0,degrees);
   pneumaticR.set(true);
   pneumaticL.set(true);
@@ -54,7 +54,7 @@ Drivetrain.driveFor(forward, 23.2, inches, 100, rpm);
 Drivetrain.turnFor(-22.5, degrees,100,rpm,true);
 Drivetrain.driveFor(forward, 17, inches, 100, rpm);
 Drivetrain.turnFor(-60, degrees,100,rpm,true);
-Drivetrain.driveFor(reverse, 19.5, inches, 60, rpm);
+Drivetrain.driveFor(reverse, 20, inches, 60, rpm);
 pneumaticR.set(false);
 pneumaticL.set(false);
 vexDelay(300);
@@ -76,10 +76,14 @@ for(int i=0; i<=4; i++){
   vexDelay(500);
   rotor.spinToPosition(0,degrees, 200,rpm);
 }
-vexDelay(1300);
-
-vexDelay(7000);
+//vexDelay(1300);
 ChainMotor.stop();
+Drivetrain.turnFor(-65, degrees,100,rpm,true);
+Drivetrain.driveFor(forward, 42, inches, 100, rpm);
+
+
+//vexDelay(7000);
+
 //Drivetrain.driveFor(forward, 25, inches, 100, rpm);
 //vexDelay(2000);
 
@@ -156,10 +160,10 @@ void L1Pressed() {
 
   raiseHand = !raiseHand;
   if (raiseHand) {
-    HandMotor.spinToPosition(0,degrees);
+    HandMotor.spinToPosition(0,degrees, 150, rpm);
   }
   else {
-    HandMotor.spinToPosition(90,degrees);
+    HandMotor.spinToPosition(90,degrees, 150, rpm);
   }
 
   
@@ -206,7 +210,7 @@ void R1released() {
 
 void R1Pressed() {
 
-  rotor.spinToPosition(90,degrees, 200,rpm);
+  rotor.spinToPosition(77,degrees, 200,rpm);
 
 }
 
@@ -258,6 +262,7 @@ else {
 
 void YPressed() {
   rotor.spinToPosition(360,degrees,200,rpm);
+  rotor.setPosition(0, degrees);
 }
 
 void DownPressed() {

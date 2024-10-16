@@ -61,9 +61,9 @@ vexDelay(300);
 Drivetrain.driveFor(forward, 17, inches, 100, rpm);
 
 ChainMotor.spin(forward,200,rpm);
-vexDelay(1300);
+vexDelay(1500);
 for(int i=0; i<=4; i++){
-  rotor.spinToPosition(77,degrees, 200,rpm);
+  rotor.spinToPosition(79,degrees, 200,rpm);
   vexDelay(280);
   rotor.spinToPosition(0,degrees, 200,rpm,false);
   vexDelay(250);
@@ -76,9 +76,9 @@ for(int i=0; i<=4; i++){
 
 //Drivetrain.turnFor(-47, degrees,100,rpm,true); 
 Drivetrain.driveFor(forward, 17, inches, 200, rpm);
-vexDelay(2000);
+vexDelay(2300);
 for(int i=0; i<=4; i++){
-  rotor.spinToPosition(77,degrees, 200,rpm);
+  rotor.spinToPosition(79,degrees, 200,rpm);
   vexDelay(280);
   rotor.spinToPosition(0,degrees, 200,rpm,false);
   vexDelay(250);
@@ -222,7 +222,7 @@ void R1released() {
 
 void R1Pressed() {
 
-  rotor.spinToPosition(77,degrees, 200,rpm);
+  rotor.spinToPosition(79,degrees, 200,rpm);
 
 }
 
